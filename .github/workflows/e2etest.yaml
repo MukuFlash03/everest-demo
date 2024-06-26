@@ -40,6 +40,7 @@ jobs:
       - name: Setup Docker on macOS using Colima, Lima-VM, and Homebrew.
         id: docker-install
         if: matrix.os == 'macos-13'
+
         uses: douglascamata/setup-docker-macos-action@v1-alpha # Uses an action in the root directory
         
       - name: Verify install for both macOS and Ubuntu
