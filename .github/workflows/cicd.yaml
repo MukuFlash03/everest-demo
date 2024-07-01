@@ -144,8 +144,9 @@ jobs:
     needs: [docker-build-and-push-images, read-matrix-build-parameters]
     runs-on: ubuntu-latest
 
-    env:
-      MATRIX_PARAMETERS: ${{ fromJson(needs.read-matrix-build-parameters.outputs.result) }}
+    # env:
+    #   MATRIX_PARAMETERS: ${{ fromJson(needs.read-matrix-build-parameters.outputs.result) }}
+      MATRIX_PARAMETERS: ${{ needs.read-matrix-build-parameters.outputs.result }}
 
     steps:
       - name: Checkout
