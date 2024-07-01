@@ -163,6 +163,9 @@ jobs:
       - name: Print Matrix Build Parameters
         run: |
           echo "Entire matrix parameters: ${{ env.MATRIX_PARAMETERS }}"
+          echo "Matrix image: ${{ env.MATRIX_PARAMETERS.image }}"
+          echo "mqtt-server image: ${{ env.MATRIX_PARAMETERS.image.mqtt-server }}"
+          echo "nodered image: ${{ env.MATRIX_PARAMETERS.image.nodered }}"
 
       - name: Build and push mqtt-server
         uses: docker/build-push-action@v5
