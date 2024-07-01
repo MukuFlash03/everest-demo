@@ -113,9 +113,9 @@ jobs:
             host_namespace: ${{ matrix.host_namespace }}
             image: ${{ matrix.image_name }}
             context: ${{ matrix.context }}
-            tags: >-
+            tags: |
               ${{ steps.meta.outputs.tags }}
-            labels: >-
+            labels: |
               ${{ steps.meta.outputs.labels }}
 
 
