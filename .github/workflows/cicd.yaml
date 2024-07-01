@@ -113,7 +113,8 @@ jobs:
             host_namespace: ${{ matrix.host_namespace }}
             image: ${{ matrix.image_name }}
             context: ${{ matrix.context }}
-            tags_labels: ${{ fromJSON(steps.meta.outputs.json) }}
+            tags_labels: ${{ steps.meta.outputs.json }}
+          # tags_labels: ${{ fromJSON(steps.meta.outputs.json) }}
 
       - name: Print meta JSON
         run: |
