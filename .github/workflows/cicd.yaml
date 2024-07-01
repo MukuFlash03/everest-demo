@@ -134,7 +134,9 @@ jobs:
       - name: Print matrix read values
         run: |
           echo "Matrix values result: ${{ steps.matrix-read.outputs.result }}"
-          echo "FromJSON Matrix values result: ${{ fromJson(steps.matrix-read.outputs.result) }}"
+          echo "FromJSON Matrix values result: ${{ fromJson(steps.matrix-read.outputs.result).image }}"
+          echo "Matrix values image: ${{ steps.matrix-read.outputs.result.image }}"
+          echo "FromJSON Matrix values image: ${{ fromJson(steps.matrix-read.outputs.result).image }}"
 
     outputs:
       result: "${{ steps.matrix-read.outputs.result }}"
