@@ -118,6 +118,8 @@ jobs:
       - name: Print meta JSON
         run: |
           echo "meta step JSON output values: ${{ fromJSON(steps.meta.outputs.json) }}"
+          echo "meta step JSON tags values: ${{ fromJSON(steps.meta.outputs.json).tags }}"
+          echo "meta step JSON labels values: ${{ fromJSON(steps.meta.outputs.json).labels }}"
 
   ## Read matrix outputs 
   read-matrix-build-parameters:
