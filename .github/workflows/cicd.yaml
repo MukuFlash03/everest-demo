@@ -20,9 +20,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - host_namespace: ghcr.io/everest/everest-demo
-            image_name: manager
-            context: ./manager
+          # - host_namespace: ghcr.io/everest/everest-demo
+          #   image_name: manager
+          #   context: ./manager
           - host_namespace: ghcr.io/everest/everest-demo
             image_name: mqtt-server
             context: ./mosquitto
@@ -125,6 +125,10 @@ jobs:
         id: matrix-read
         with:
           matrix-step-name: docker-build-and-push-images
+
+      - name: Print matrix read values
+        run: |
+          echo "Matrix values result: ${{ steps.matrix-read.outputs.result }}"
 
     outputs:
       result: "${{ steps.matrix-read.outputs.result }}"
