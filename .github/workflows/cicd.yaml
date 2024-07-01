@@ -103,6 +103,9 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.image_name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image_name }}
 
+      - name: List Docker images
+        run: docker images
+
       - name: Write Matrix Build Parameters to Output
         uses: cloudposse/github-action-matrix-outputs-write@v1
         id: matrix-write
@@ -157,10 +160,29 @@ jobs:
         with:
           fetch-depth: 0
 
-
       - name: Print Matrix Build Parameters
         run: |
           echo "Entire matrix parameters: ${{ env.MATRIX_PARAMETERS }}"
+
+      - name: Build and push mqtt-server
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ env.MATRIX_PARAMETERS.context.mqtt-server }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.MATRIX_PARAMETERS.tags_labels.mqtt-server.tags }}
+          labels: ${{ env.MATRIX_PARAMETERS.tags_labels.mqtt-server.labels }}
+          cache-from: type=gha,scope=${{ env.MATRIX_PARAMETERS.image.mqtt-server }}
+          cache-to: type=gha,mode=max,scope=${{ env.MATRIX_PARAMETERS.image.mqtt-server }}
+
+      - name: Build and push nodered
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ env.MATRIX_PARAMETERS.context.nodered }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.MATRIX_PARAMETERS.tags_labels.nodered.tags }}
+          labels: ${{ env.MATRIX_PARAMETERS.tags_labels.nodered.labels }}
+          cache-from: type=gha,scope=${{ env.MATRIX_PARAMETERS.image.nodered }}
+          cache-to: type=gha,mode=max,scope=${{ env.MATRIX_PARAMETERS.image.nodered }}
 
       - name: List Docker images
         run: docker images
