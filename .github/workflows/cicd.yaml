@@ -110,11 +110,11 @@ jobs:
           matrix-step-name: ${{ github.job }}
           matrix-key: ${{ matrix.image_name }}
           outputs: |-
-            host_namespace: ${{ matrix.host_namespace }}
-            image: ${{ matrix.image_name }}
-            context: ${{ matrix.context }}
-            tags: ${{ steps.meta.outputs.tags }}
-            labels: ${{ steps.meta.outputs.labels }}
+            host_namespace: "${{ matrix.host_namespace }}"
+            image: "${{ matrix.image_name }}"
+            context: "${{ matrix.context }}"
+            tags: "${{ steps.meta.outputs.tags }}"
+            labels: "${{ steps.meta.outputs.labels }}"
 
 
   ## Read matrix outputs 
