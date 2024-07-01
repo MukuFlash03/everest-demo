@@ -115,6 +115,9 @@ jobs:
             context: ${{ matrix.context }}
             tags_labels: ${{ fromJSON(steps.meta.outputs.json) }}
 
+      - name: Print meta JSON
+        run: |
+          echo "meta step JSON output values: ${{ fromJSON(steps.meta.outputs.json) }}"
 
   ## Read matrix outputs 
   read-matrix-build-parameters:
