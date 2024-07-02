@@ -10,27 +10,7 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  run-demo-automated-test:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: List Docker images
-        run: docker images
-
-      - name: Run automated test script
-        timeout-minutes: 30
-        run: bash demo-automated-testing.sh 
-
-      - name: List Docker images
-        run: docker images
-
-  docker-build-and-push-images:
-    needs: [run-demo-automated-test]
+  docker-build-images:
     runs-on: ubuntu-latest
 
     permissions:
@@ -123,8 +103,29 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.image_name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image_name }}
 
-  docker-build-and-push-images-2:
-    needs: [docker-build-and-push-images]
+  run-demo-automated-tests:
+    needs: [docker-build-images]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List Docker images
+        run: docker images
+
+      - name: Run automated test script
+        timeout-minutes: 30
+        run: |
+          bash demo-automated-testing.sh 
+
+      - name: List Docker images
+        run: docker images
+
+  docker-build-and-push-images:
+    needs: [run-demo-automated-tests]
     runs-on: ubuntu-latest
 
     permissions:
