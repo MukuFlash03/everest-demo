@@ -1,7 +1,7 @@
 name: cicd
 
 on:
-  # TODO: Remove [automate-tests-actions, automate-tests-merge, automate-tests-2] branch once changes are final
+  # TODO: Remove [automate-tests-actions, automate-tests-merge] branch once changes are final
   pull_request:
     branches: [ main, automate-tests-merge ]
   push:
@@ -10,6 +10,25 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
+  run-demo-automated-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List Docker images
+        run: docker images
+
+      - name: Run automated test script
+        timeout-minutes: 30
+        run: bash demo-automated-testing.sh 
+
+      - name: List Docker images
+        run: docker images
+
   docker-build-and-push-images:
     runs-on: ubuntu-latest
 
@@ -102,94 +121,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=${{ matrix.image_name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image_name }}
-
-      - name: List Docker images
-        run: docker images
-
-      - name: Write Matrix Build Parameters to Output
-        uses: cloudposse/github-action-matrix-outputs-write@v1
-        id: matrix-write
-        with:
-          matrix-step-name: ${{ github.job }}
-          matrix-key: ${{ matrix.image_name }}
-          outputs: |
-            host_namespace: ${{ matrix.host_namespace }}
-            image: ${{ matrix.image_name }}
-            context: ${{ matrix.context }}
-            tags_labels: ${{ steps.meta.outputs.json }}
-          # tags_labels: ${{ fromJSON(steps.meta.outputs.json) }}
-
-      - name: Print meta JSON
-        run: |
-          echo "meta step JSON output values: ${{ fromJSON(steps.meta.outputs.json) }}"
-          echo "meta step JSON tags values: ${{ fromJSON(steps.meta.outputs.json).tags }}"
-          echo "meta step JSON labels values: ${{ fromJSON(steps.meta.outputs.json).labels }}"
-
-  ## Read matrix outputs 
-  read-matrix-build-parameters:
-    runs-on: ubuntu-latest
-    needs: [docker-build-and-push-images]
-    steps:
-      - uses: cloudposse/github-action-matrix-outputs-read@v1
-        id: matrix-read
-        with:
-          matrix-step-name: docker-build-and-push-images
-
-      - name: Print matrix read values
-        run: |
-          echo "Matrix values result: ${{ steps.matrix-read.outputs.result }}"
-          echo "FromJSON Matrix values result: ${{ fromJson(steps.matrix-read.outputs.result).image }}"
-          echo "Matrix values image: ${{ steps.matrix-read.outputs.result.image }}"
-          echo "FromJSON Matrix values image: ${{ fromJson(steps.matrix-read.outputs.result).image }}"
-
-    outputs:
-      result: "${{ steps.matrix-read.outputs.result }}"
-
-
-  run-demo-automated-test:
-    needs: [docker-build-and-push-images, read-matrix-build-parameters]
-    runs-on: ubuntu-latest
-
-    env:
-    #   MATRIX_PARAMETERS: ${{ fromJson(needs.read-matrix-build-parameters.outputs.result) }}
-      MATRIX_PARAMETERS: ${{ needs.read-matrix-build-parameters.outputs.result }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Print Matrix Build Parameters
-        run: |
-          echo "Entire matrix parameters: ${{ env.MATRIX_PARAMETERS }}"
-          echo "Matrix image: ${{ env.MATRIX_PARAMETERS.image }}"
-          echo "mqtt-server image: ${{ env.MATRIX_PARAMETERS.image.mqtt-server }}"
-          echo "nodered image: ${{ env.MATRIX_PARAMETERS.image.nodered }}"
-
-      - name: Build and push mqtt-server
-        uses: docker/build-push-action@v5
-        with:
-          context: ${{ env.MATRIX_PARAMETERS.context.mqtt-server }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.MATRIX_PARAMETERS.tags_labels.mqtt-server.tags }}
-          labels: ${{ env.MATRIX_PARAMETERS.tags_labels.mqtt-server.labels }}
-          cache-from: type=gha,scope=${{ env.MATRIX_PARAMETERS.image.mqtt-server }}
-          cache-to: type=gha,mode=max,scope=${{ env.MATRIX_PARAMETERS.image.mqtt-server }}
-
-      - name: Build and push nodered
-        uses: docker/build-push-action@v5
-        with:
-          context: ${{ env.MATRIX_PARAMETERS.context.nodered }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.MATRIX_PARAMETERS.tags_labels.nodered.tags }}
-          labels: ${{ env.MATRIX_PARAMETERS.tags_labels.nodered.labels }}
-          cache-from: type=gha,scope=${{ env.MATRIX_PARAMETERS.image.nodered }}
-          cache-to: type=gha,mode=max,scope=${{ env.MATRIX_PARAMETERS.image.nodered }}
-
-      - name: List Docker images
-        run: docker images
-
-      - name: Run automated test script
-        timeout-minutes: 30
-        run: bash demo-automated-testing.sh 

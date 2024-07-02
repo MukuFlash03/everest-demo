@@ -3,11 +3,13 @@ version: "3.6"
 services:
   mqtt-server:
     image: ghcr.io/everest/everest-demo/mqtt-server:${TAG}
+    build: mosquitto
     logging:
       driver: none
 
   manager:
     image: ghcr.io/everest/everest-demo/manager:${TAG}
+    build: manager
     depends_on:
       - mqtt-server
     environment:
