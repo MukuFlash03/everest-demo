@@ -30,14 +30,11 @@ download_demo_file() {
 download_demo_file "${DEMO_COMPOSE_FILE_NAME}"
 download_demo_file .env
 
-# docker compose --project-name everest-ac-demo \
-# 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up
-
-# docker-compose build && \
 docker-compose --project-name everest-ac-demo \
 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up \
+           --build \
            --abort-on-container-exit \
-           --exit-code-from manager && \
+           --exit-code-from manager
 
 exit_code=$?            
 echo "Docker-compose up exit code from manager service: $exit_code"       
