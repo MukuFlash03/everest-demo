@@ -1,7 +1,7 @@
 name: cicd
 
 on:
-  # TODO: Remove [automate-tests-actions, automate-tests-merge] branch once changes are final
+  # TODO: Remove [automate-tests-merge] branch once changes are final
   pull_request:
     branches: [ main, automate-tests-merge ]
   push:
@@ -97,7 +97,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.context }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=${{ matrix.image_name }}

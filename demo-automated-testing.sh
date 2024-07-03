@@ -45,5 +45,4 @@ echo "Docker-compose up exit code from manager service: $exit_code"
 docker-compose --project-name everest-ac-demo \
 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" down
 
-# exit $exit_code
-exit 1
+exit $exit_code
