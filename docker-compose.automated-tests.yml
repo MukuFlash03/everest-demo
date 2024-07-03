@@ -4,14 +4,14 @@ services:
   mqtt-server:
     # image: ghcr.io/everest/everest-demo/mqtt-server:${TAG}
     build: ./mosquitto
-    pull_policy: build
+    pull_policy: never
     logging:
       driver: none
 
   manager:
     # image: ghcr.io/everest/everest-demo/manager:${TAG}
     build: ./manager
-    pull_policy: build
+    pull_policy: never
     depends_on:
       - mqtt-server
     environment:
