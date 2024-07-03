@@ -22,6 +22,5 @@ COPY config.json ./dist/share/everest/modules/OCPP201/config.json
 COPY device_model_storage_maeve_sp1.db ./dist/share/everest/modules/OCPP201/device_model_storage.db
 
 COPY run-test.sh /ext/source/tests/run-test.sh
-COPY misc_test.txt /ext/source/tests/misc_test.txt
 
 LABEL org.opencontainers.image.source=https://github.com/everest/everest-demo
