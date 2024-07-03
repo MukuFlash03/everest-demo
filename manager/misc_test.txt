@@ -1,0 +1,2 @@
+Random text file added to image context folder.
+Testing to see if image is not cached and is rebuilt.
