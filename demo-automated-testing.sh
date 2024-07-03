@@ -32,12 +32,11 @@ download_demo_file .env
 
 docker images
 
-# docker compose --project-name everest-ac-demo \
-# 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" build \
+docker compose --project-name everest-ac-demo \
+	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" build \
 
 docker compose --project-name everest-ac-demo \
 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up \
-           --build \
            --abort-on-container-exit \
            --exit-code-from manager
 
