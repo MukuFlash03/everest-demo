@@ -30,6 +30,11 @@ download_demo_file() {
 download_demo_file "${DEMO_COMPOSE_FILE_NAME}"
 download_demo_file .env
 
+docker images
+
+docker-compose --project-name everest-ac-demo \
+	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" build \
+
 docker-compose --project-name everest-ac-demo \
 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up \
            --build \
