@@ -30,6 +30,9 @@ download_demo_file() {
 download_demo_file "${DEMO_COMPOSE_FILE_NAME}"
 download_demo_file .env
 
+echo "Listing contents of .env file"
+cat .env
+
 echo "Listing docker images..."
 docker images
 
