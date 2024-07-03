@@ -32,10 +32,10 @@ download_demo_file .env
 
 docker images
 
-docker-compose --project-name everest-ac-demo \
-	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" build \
+# docker compose --project-name everest-ac-demo \
+# 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" build \
 
-docker-compose --project-name everest-ac-demo \
+docker compose --project-name everest-ac-demo \
 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up \
            --build \
            --abort-on-container-exit \
@@ -44,7 +44,7 @@ docker-compose --project-name everest-ac-demo \
 exit_code=$?            
 echo "Docker-compose up exit code from manager service: $exit_code"       
 
-docker-compose --project-name everest-ac-demo \
+docker compose --project-name everest-ac-demo \
 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" down
 
 exit $exit_code
