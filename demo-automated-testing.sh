@@ -31,14 +31,11 @@ download_demo_file "${DEMO_COMPOSE_FILE_NAME}"
 download_demo_file .env
 
 docker compose --project-name everest-ac-demo \
-	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" 
-           --abort-on-container-exit \ 
-           --exit-code-from manager up
-
+	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up
 
 # docker-compose build && \
-docker-compose --project-name everest-ac-demo \
-	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up \
-           --abort-on-container-exit \
-           --exit-code-from manager && \
-docker-compose down
+# docker-compose --project-name everest-ac-demo \
+# 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up \
+#            --abort-on-container-exit \
+#            --exit-code-from manager && \
+# docker-compose down
