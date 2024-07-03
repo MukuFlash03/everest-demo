@@ -35,6 +35,7 @@ docker images
 echo "Running docker compose build..."
 docker compose --project-name everest-ac-demo \
 	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" build \
+           --no-cache
 
 echo "Running docker compose up..."
 docker compose --project-name everest-ac-demo \
