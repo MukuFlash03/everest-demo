@@ -1,7 +1,6 @@
 name: cicd
 
 on:
-  # TODO: Remove [automate-tests-merge] branch once changes are final
   pull_request:
     branches: [ main, automate-tests-merge ]
   push:
@@ -123,4 +122,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=${{ matrix.image_name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image_name }}
-          
