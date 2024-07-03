@@ -30,25 +30,10 @@ download_demo_file() {
 download_demo_file "${DEMO_COMPOSE_FILE_NAME}"
 download_demo_file .env
 
-echo "Listing contents of .env file"
-cat .env
-
-echo "Listing docker images..."
-docker images
-
-echo "Listing docker containers..."
-docker ps
-
-echo "Running docker compose build..."
-docker compose --project-name everest-ac-demo \
-	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" build \
-           --no-cache
-
 echo "Running docker compose up..."
 docker compose --project-name everest-ac-demo \
-	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" up \
+	       --file "${DEMO_COMPOSE_FILE_NAME}" up \
            --build \
-           --force-recreate \
            --abort-on-container-exit \
            --exit-code-from manager
 
@@ -57,6 +42,6 @@ echo "Docker-compose up exit code from manager service: $exit_code"
 
 echo "Running docker compose down..."
 docker compose --project-name everest-ac-demo \
-	       --file "${DEMO_DIR}/${DEMO_COMPOSE_FILE_NAME}" down
+	       --file "${DEMO_COMPOSE_FILE_NAME}" down
 
 exit $exit_code
