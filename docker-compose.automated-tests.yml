@@ -17,7 +17,6 @@ services:
     environment:
       - MQTT_SERVER_ADDRESS=mqtt-server
     working_dir: /ext/source/tests
-    # entrypoint: "sh ./run-test.sh"
-    entrypoint: "sh ./test-exit-code.sh failure"
+    entrypoint: "sh ./run-test.sh"
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0
