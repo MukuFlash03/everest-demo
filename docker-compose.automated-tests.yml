@@ -3,15 +3,27 @@ version: "3.6"
 services:
   mqtt-server:
     image: ghcr.io/everest/everest-demo/mqtt-server:${TAG}
-    build: mosquitto
+    # build: mosquitto
     # pull_policy: build
+    build:
+      context: mosquitto
+      cache_from: 
+        - type=gha,scope=mqtt-server
+      cache_to: 
+        - type=gha,mode=max,scope=mqtt-server
     logging:
       driver: none
 
   manager:
     image: ghcr.io/everest/everest-demo/manager:${TAG}
-    build: manager
+    # build: manager
     # pull_policy: build
+    build:
+      context: manager
+      cache_from: 
+        - type=gha,scope=manager
+      cache_to: 
+        - type=gha,mode=max,scope=manager
     depends_on:
       - mqtt-server
     environment:
