@@ -3,33 +3,16 @@ version: "3.6"
 services:
   mqtt-server:
     image: ghcr.io/everest/everest-demo/mqtt-server:${TAG}
-    # build: mosquitto
-    # pull_policy: build
-    build:
-      context: mosquitto
-      cache_from: 
-        - type=gha,scope=mqtt-server
-      cache_to: 
-        - type=gha,mode=max,scope=mqtt-server
     logging:
       driver: none
 
   manager:
     image: ghcr.io/everest/everest-demo/manager:${TAG}
-    # build: manager
-    # pull_policy: build
-    build:
-      context: manager
-      cache_from: 
-        - type=gha,scope=manager
-      cache_to: 
-        - type=gha,mode=max,scope=manager
     depends_on:
       - mqtt-server
     environment:
       - MQTT_SERVER_ADDRESS=mqtt-server
     working_dir: /ext/source/tests
     entrypoint: "sh ./run-test.sh"
-    # entrypoint: "sh ./test-cat.sh"
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0
