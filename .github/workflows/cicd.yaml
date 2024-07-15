@@ -10,7 +10,6 @@ on:
 
 jobs:
   docker-build-and-push-images:
-    needs: [run-demo-automated-tests]
     runs-on: ubuntu-latest
 
     permissions:
