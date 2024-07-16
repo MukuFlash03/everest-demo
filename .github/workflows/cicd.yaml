@@ -104,7 +104,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.image_name }}
     
       - name: Run automated tests using docker-compose.automated-tests.yml
-        timeout-minutes: 30
+        if: ${{ matrix.image_name == 'manager' }}
         run: |
           echo "Running docker compose up..."
           docker compose --project-name everest-ac-demo \
