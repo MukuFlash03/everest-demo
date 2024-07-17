@@ -105,7 +105,6 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.image_name }}
     
       - name: Run automated tests using docker-compose.automated-tests.yml
-        if: ${{ matrix.image_name == 'manager' }}
         # if: ${{ matrix.image_name == 'manager' }}        
         run: |
           echo "Running docker compose up..."
