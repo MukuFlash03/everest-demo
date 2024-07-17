@@ -106,6 +106,7 @@ jobs:
     
       - name: Run automated tests using docker-compose.automated-tests.yml
         if: ${{ matrix.image_name == 'manager' }}
+        # if: ${{ matrix.image_name == 'manager' }}        
         run: |
           echo "Running docker compose up..."
           docker compose --project-name everest-ac-demo \
