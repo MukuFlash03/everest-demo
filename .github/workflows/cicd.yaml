@@ -187,6 +187,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           load: true
+          context: ./mosquitto
           push: false
           tags: ${{ steps.meta_mqtt.outputs.tags }}
           labels: ${{ steps.meta_mqtt.outputs.labels }}
@@ -197,6 +198,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           load: true
+          context: ./manager
           push: false
           tags: ${{ steps.meta_manager.outputs.tags }}
           labels: ${{ steps.meta_manager.outputs.labels }}
