@@ -21,14 +21,14 @@ jobs:
       matrix:
         include:
           - host_namespace: ghcr.io/everest/everest-demo
-            image_name: manager
-            context: ./manager
-          - host_namespace: ghcr.io/everest/everest-demo
             image_name: mqtt-server
             context: ./mosquitto
           - host_namespace: ghcr.io/everest/everest-demo
             image_name: nodered
             context: ./nodered
+          - host_namespace: ghcr.io/everest/everest-demo
+            image_name: manager
+            context: ./manager
 
     steps:
       - name: Checkout
@@ -105,7 +105,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.image_name }}
     
       - name: Run automated tests using docker-compose.automated-tests.yml
-        # if: ${{ matrix.image_name == 'manager' }}        
+        if: ${{ matrix.image_name == 'manager' }}        
         run: |
           echo "Running docker compose up..."
           docker compose --project-name everest-ac-demo \
