@@ -18,6 +18,7 @@ jobs:
       packages: write
 
     strategy:
+      max-parallel: 1
       matrix:
         include:
           - host_namespace: ghcr.io/everest/everest-demo
