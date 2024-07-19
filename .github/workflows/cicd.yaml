@@ -112,33 +112,31 @@ jobs:
         id: save-mqtt-image
         shell: bash
         run: |
-          source .env
-          echo "TAG=${TAG}"
-          docker save ghcr.io/everest/everest-demo/mqtt-server:${TAG}
-          gzip > mqtt-server_${TAG}.tar.gz
-          # docker save --output mqtt-server:${TAG}.tar ghcr.io/everest/everest-demo/mqtt-server:${TAG}
+          echo "TAG=${{ steps.docker-image-version-check.outputs.TAG }}"
+          docker save ghcr.io/everest/everest-demo/mqtt-server:${{ steps.docker-image-version-check.outputs.TAG }} | gzip > mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar.gz
+          # docker save --output mqtt-server:${{ steps.docker-image-version-check.outputs.TAG }}.tar ghcr.io/everest/everest-demo/mqtt-server:${{ steps.docker-image-version-check.outputs.TAG }}
       
       - name: Upload mqtt-server image as Artifact
         if: ${{ matrix.image_name == 'mqtt-server' }}
         uses: actions/upload-artifact@v4
         with:
-          name: mqtt-server-image
-          path: mqtt-server_${TAG}.tar.gz
+          name: mqtt_server_image_${{ steps.docker-image-version-check.outputs.TAG }}
+          path: mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar.gz
           overwrite: true
 
       - name: Download mqtt-server image as Artifact
         if: ${{ matrix.image_name == 'manager' }}
         uses: actions/download-artifact@v4
         with:
-          name: mqtt-server-image
-          path: mqtt-server_${TAG}.tar.gz
+          name: mqtt_server_image_${{ steps.docker-image-version-check.outputs.TAG }}
+          path: mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar.gz
 
       - name: Load Docker image
         if: ${{ matrix.image_name == 'manager' }}
         id: load-mqtt-image
         shell: bash
         run: |
-          docker load < mqtt-server_${TAG}.tar.gz
+          docker load < mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar.gz
     
       - name: Run automated tests using docker-compose.automated-tests.yml
         if: ${{ matrix.image_name == 'manager' }}
