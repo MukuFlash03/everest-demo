@@ -5,8 +5,6 @@ services:
     image: ghcr.io/everest/everest-demo/mqtt-server:${TAG}
     logging:
       driver: none
-    working_dir: /mosquitto/config/
-    entrypoint: "sh ./run-test.sh"
 
   manager:
     image: ghcr.io/everest/everest-demo/manager:${TAG}
@@ -15,7 +13,7 @@ services:
     environment:
       - MQTT_SERVER_ADDRESS=mqtt-server
     working_dir: /ext/source/tests
-    entrypoint: "sh ./test-exit-code.sh success"
+    entrypoint: "sh ./test-exit-code.sh failure"
     # entrypoint: "sh ./run-test.sh"
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0
