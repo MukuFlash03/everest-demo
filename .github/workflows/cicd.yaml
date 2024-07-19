@@ -112,7 +112,7 @@ jobs:
         id: save-mqtt-image
         shell: bash
         run: |
-          docker save myimage:latest | gzip > mqtt-server_${TAG}.tar.gz
+          docker save ghcr.io/everest/everest-demo/mqtt-server:${TAG} | gzip > mqtt-server_${TAG}.tar.gz
           # docker save --output mqtt-server:${TAG}.tar ghcr.io/everest/everest-demo/mqtt-server:${TAG}
       
       - name: Upload mqtt-server image as Artifact
