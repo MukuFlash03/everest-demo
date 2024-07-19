@@ -135,8 +135,7 @@ jobs:
         id: load-mqtt-image
         shell: bash
         run: |
-          docker load --input /tmp/mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar
-          docker image ls -a          
+          docker load --input /tmp/mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar     
     
       - name: Run automated tests using docker-compose.automated-tests.yml
         if: ${{ matrix.image_name == 'manager' }}
