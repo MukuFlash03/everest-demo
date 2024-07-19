@@ -5,6 +5,8 @@ services:
     image: ghcr.io/everest/everest-demo/mqtt-server:${TAG}
     logging:
       driver: none
+    working_dir: /mosquitto/config/
+    entrypoint: "sh ./run-test.sh"
 
   manager:
     image: ghcr.io/everest/everest-demo/manager:${TAG}
