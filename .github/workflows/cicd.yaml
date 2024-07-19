@@ -113,7 +113,7 @@ jobs:
         shell: bash
         run: |
           echo "TAG=${{ steps.docker-image-version-check.outputs.TAG }}"
-          docker save --output mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar ghcr.io/everest/everest-demo/mqtt-server:${{ steps.docker-image-version-check.outputs.TAG }}
+          docker save --output /tmp/mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar ghcr.io/everest/everest-demo/mqtt-server:${{ steps.docker-image-version-check.outputs.TAG }}
           # docker save ghcr.io/everest/everest-demo/mqtt-server:${{ steps.docker-image-version-check.outputs.TAG }} | gzip > mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar.gz
       
       - name: Upload mqtt-server image as Artifact
@@ -121,7 +121,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mqtt_server_image_${{ steps.docker-image-version-check.outputs.TAG }}
-          path: mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar
+          path: /tmp/mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar
           overwrite: true
 
       - name: Download mqtt-server image as Artifact
@@ -129,14 +129,17 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mqtt_server_image_${{ steps.docker-image-version-check.outputs.TAG }}
-          path: mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar
+          path: /tmp
+          # path: mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar
 
       - name: Load Docker image
         if: ${{ matrix.image_name == 'manager' }}
         id: load-mqtt-image
         shell: bash
         run: |
-          docker load --input mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar
+          docker load --input /tmp/mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar
+          docker image ls -a          
+          # docker load --input mqtt-server_${{ steps.docker-image-version-check.outputs.TAG }}.tar
     
       - name: Run automated tests using docker-compose.automated-tests.yml
         if: ${{ matrix.image_name == 'manager' }}
