@@ -2,8 +2,8 @@ name: cicd
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [ main, main-merge ]
+      # - main
   push:
     branches:
       - main
