@@ -16,11 +16,12 @@ RUN git clone https://github.com/EVerest/everest-core.git \
         # Don't run the test-and-install script since it deletes the build directory!
         && /entrypoint.sh run-script install
 
-# Copy over the custom config *after* compilation and installation
-COPY config-docker.json ./dist/share/everest/modules/OCPP/config-docker.json
-COPY config.json ./dist/share/everest/modules/OCPP201/config.json
-COPY device_model_storage_maeve_sp1.db ./dist/share/everest/modules/OCPP201/device_model_storage.db
+# # Copy over the custom config *after* compilation and installation
+# COPY config-docker.json ./dist/share/everest/modules/OCPP/config-docker.json
+# COPY config.json ./dist/share/everest/modules/OCPP201/config.json
+# COPY device_model_storage_maeve_sp1.db ./dist/share/everest/modules/OCPP201/device_model_storage.db
 
-COPY run-test.sh /ext/source/tests/run-test.sh
+# COPY run-test.sh /ext/source/tests/run-test.sh
+COPY test-exit-code.sh /ext/source/tests/test-exit-code.sh
 
 LABEL org.opencontainers.image.source=https://github.com/everest/everest-demo
