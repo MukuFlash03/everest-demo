@@ -93,22 +93,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Cleanup before build
-        run: |
-          docker system prune -af
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          df -h
-
-      - name: Check disk space before build
-        run: df -h
     
       - name: Build and export to Docker
         uses: docker/build-push-action@v6
-        id: docker_build
         with:
           load: true
           context: ${{ matrix.context }}
@@ -117,32 +104,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=${{ matrix.image_name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image_name }}
-          build-args: |
-                    BUILDKIT_INLINE_CACHE=1
-          no-cache: true
-          ulimit: nofile=1024:1024
-        continue-on-error: true
-    
-
-      - name: Check build status and diagnose
-        if: steps.docker_build.outcome == 'failure'
-        run: |
-          echo "Docker build failed. Checking system status:"
-          df -h
-          du -sh /*
-          docker system df
-          docker system info
-          echo "Last 100 lines of Docker daemon logs:"
-          sudo tail -n 100 /var/log/docker.log
-
-      - name: Debug Dockerfile
-        if: steps.docker_build.outcome == 'failure'
-        run: |
-          cd ${{ matrix.context }}
-          echo "Dockerfile contents:"
-          cat Dockerfile
-          echo "Building Dockerfile step by step:"
-          docker build --progress=plain --no-cache -t debug-image:1 -f Dockerfile . || true
 
       # Following fours steps are specifically for running automated steps which includes loading the 
       # mqtt-server image from the GitHub Actions Cache so that the docker compose automated tests can 
