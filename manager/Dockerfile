@@ -1,6 +1,7 @@
-FROM --platform=linux/x86_64 ghcr.io/everest/build-kit-alpine:latest
+ARG BUILDKIT_VERSION=sha256:c0fe4236506c085687f58bdfe4865d973060185d33c270ab076fad320d4421b0
+FROM --platform=linux/x86_64 ghcr.io/everest/build-kit-alpine@${BUILDKIT_VERSION}
 
-ARG EVEREST_VERSION=2024.3.0
+ARG EVEREST_VERSION=2024.9.0-rc1
 ENV EVEREST_VERSION=${EVEREST_VERSION}
 
 COPY install.sh ./
@@ -22,5 +23,6 @@ COPY config.json ./dist/share/everest/modules/OCPP201/config.json
 COPY device_model_storage_maeve_sp1.db ./dist/share/everest/modules/OCPP201/device_model_storage.db
 
 COPY run-test.sh /ext/source/tests/run-test.sh
+COPY test-exit-code.sh /ext/source/tests/test-exit-code.sh
 
 LABEL org.opencontainers.image.source=https://github.com/everest/everest-demo
