@@ -1,7 +1,7 @@
 ARG BUILDKIT_VERSION=sha256:fbdf77fc1a7be39a9eba2fa9838d475fc0f884bbf7800dd6fabbb7efe8857fe3
 FROM --platform=linux/x86_64 ghcr.io/everest/build-kit-alpine@${BUILDKIT_VERSION}
 
-ARG EVEREST_VERSION=2024.6.0-rc2
+ARG EVEREST_VERSION=2024.7.0
 ENV EVEREST_VERSION=${EVEREST_VERSION}
 
 COPY install.sh ./
